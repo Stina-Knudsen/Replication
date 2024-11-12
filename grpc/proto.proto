@@ -15,7 +15,7 @@ message Amount {
 }
 
 message Ack {
-    int32 ack = 1;
+    string ack = 1;
 }
 
 message Outcome {
