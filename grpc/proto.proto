@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "../grpc";
+
+package proto;
+
+service AuctionServer {
+    rpc Bid(Amount) returns (Ack);
+
+    rpc Result(Empty) returns (Outcome);
+}
+
+message Amount {
+    int32 amount = 1;
+}
+
+message Ack {
+    int32 ack = 1;
+}
+
+message Outcome {
+    string result = 1;
+    int32 highestBid = 2;
+}
+
+message Empty {}
