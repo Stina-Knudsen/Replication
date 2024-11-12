@@ -19,7 +19,7 @@ type AuctionServer struct {
 	proto.UnimplementedAuctionServerServer
 	highestBid    int
 	highestBidder string
-	bidders       []string
+	bidders       map[string]bool
 	isAuctionOver bool
 	mutex         sync.Mutex
 }
@@ -41,17 +41,18 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	proto.RegisterAuctionServerServer(grpcServer, NewAuctionServer())
+	auctionServer := &AuctionServer{
+		highestBid:    0,
+		bidders:       make(map[string]bool),
+		isAuctionOver: false,
+	}
+	proto.RegisterAuctionServerServer(grpcServer, auctionServer)
+
+	auctionServer.AuctionTimer()
 
 	log.Printf("Server is running at %v", listener.Addr())
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
-	}
-}
-
-func NewAuctionServer() *AuctionServer {
-	return &AuctionServer{
-		bidders: []string{},
 	}
 }
 
@@ -68,6 +69,7 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 	if int(req.Amount) > s.highestBid {
 
 		s.highestBid = int(req.Amount)
+		// s.highestBidder = whatever highestbidder ID is
 		return &proto.Ack{
 			Ack: "success",
 		}, nil
@@ -78,8 +80,27 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 	}
 }
 
-func (s *AuctionServer) Result(ctx context.Context) (*proto.Outcome, error) {
-	// hvis stadig i gang, så retuner det højeste bid
+func (s *AuctionServer) Result(ctx context.Context, req *proto.Empty) (*proto.Outcome, error) {
+	s.mutex.Lock()
+	defer s.mutex.Lock()
 
-	// hvis ovre, så retuner den der budte højest
+	if s.isAuctionOver {
+		return &proto.Outcome{
+			Result:     "Auction over, the highest bidder was " + s.highestBidder,
+			HighestBid: int32(s.highestBid),
+		}, nil
+	} else {
+		return &proto.Outcome{
+			Result:     "Auction is ongoing, the highest bidder is " + s.highestBidder,
+			HighestBid: int32(s.highestBid),
+		}, nil
+	}
+}
+
+func (s *AuctionServer) AuctionTimer() {
+	time.Sleep(auctionDuration) //makes the auction run for an amount of time
+	s.mutex.Lock()
+	s.isAuctionOver = true //ends auction
+	s.mutex.Unlock()
+	log.Println("Auction has ended")
 }
