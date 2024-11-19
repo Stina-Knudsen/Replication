@@ -11,6 +11,7 @@ import (
 	proto "Replication/grpc"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 const auctionDuration = 100 * time.Second
@@ -22,6 +23,13 @@ type AuctionServer struct {
 	bidders       map[string]bool
 	isAuctionOver bool
 	mutex         sync.Mutex
+	reps          []string
+	lamportClock  int64
+}
+
+type TimeRequest struct {
+	Amount       *proto.Amount
+	LamportClock int64
 }
 
 func main() {
@@ -60,6 +68,16 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
+	s.lamportClock++
+	log.Printf("Received bid with amount %v, Lamport clock: %d", req.Amount, s.lamportClock)
+
+	timeReq := TimeRequest{
+		Amount:       req,
+		LamportClock: s.lamportClock,
+	}
+
+	s.processRequest(timeReq)
+
 	if s.isAuctionOver {
 		return &proto.Ack{
 			Ack: "fail",
@@ -70,6 +88,10 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 
 		s.highestBid = int(req.Amount)
 		// s.highestBidder = whatever highestbidder ID is
+
+		// Propagate the bid request to all replicas
+		s.PropagateBid(req)
+
 		return &proto.Ack{
 			Ack: "success",
 		}, nil
@@ -80,9 +102,26 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 	}
 }
 
+func (s *AuctionServer) PropagateBid(req *proto.Amount) {
+	for _, addr := range s.reps {
+		conn, err := grpc.Dial(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err != nil {
+			log.Printf("Cannot connect to replica %v: %v", addr, err)
+			continue
+		}
+		client := proto.NewAuctionServerClient(conn)
+
+		_, err = client.Bid(context.Background(), req)
+		if err != nil {
+			log.Printf("Failed to propagate bid to replica %v: %v", addr, err)
+		}
+		conn.Close()
+	}
+}
+
 func (s *AuctionServer) Result(ctx context.Context, req *proto.Empty) (*proto.Outcome, error) {
 	s.mutex.Lock()
-	defer s.mutex.Lock()
+	defer s.mutex.Unlock()
 
 	if s.isAuctionOver {
 		return &proto.Outcome{
@@ -104,3 +143,9 @@ func (s *AuctionServer) AuctionTimer() {
 	s.mutex.Unlock()
 	log.Println("Auction has ended")
 }
+
+/*
+func (s *AuctionServer) processRequest(req TimeRequest){
+	log.Printf("the request is pecessing  with amoung %v and lamport clock %d", req.Amount.Amount)
+}
+*/
