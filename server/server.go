@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 	"net"
 	"os"
@@ -24,7 +25,10 @@ type AuctionServer struct {
 	isAuctionOver bool
 	mutex         sync.Mutex
 	reps          []string
+	port          string
 }
+
+var port = flag.String("port", "5000", "Server port")
 
 func main() {
 	// to the log
@@ -36,11 +40,11 @@ func main() {
 
 	log.SetOutput(file)
 
-	log.Println("writing to the log from server")
+	flag.Parse()
 
 	// actual main
 	log.Println("i want to start listening")
-	listener, err := net.Listen("tcp", ":50051")
+	listener, err := net.Listen("tcp", ":"+*port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
@@ -51,6 +55,7 @@ func main() {
 		highestBid:    0,
 		bidders:       make(map[string]bool),
 		isAuctionOver: false,
+		port:          *port,
 	}
 	proto.RegisterAuctionServerServer(grpcServer, auctionServer)
 

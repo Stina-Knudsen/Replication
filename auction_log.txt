@@ -1,12 +1,40 @@
-2024/11/24 14:19:42 writing to the log from server
-2024/11/24 14:19:42 i want to start listening
-2024/11/24 14:19:42 Listener created successfully: [::]:50051
-2024/11/24 14:19:42 Server is running at [::]:50051
-2024/11/24 14:19:42 Starting auction timer...
-2024/11/24 14:20:01 Starting client...
-2024/11/24 14:20:01 Client attempting to connect to server: :50051
-2024/11/24 14:20:01 Client connected to server: :50051
-2024/11/24 14:20:01 Client attempting to connect to server: :50052
-2024/11/24 14:20:01 Client connected to server: :50052
-2024/11/24 14:20:01 Client attempting to connect to server: :50053
-2024/11/24 14:20:01 Client connected to server: :50053
+2024/11/24 15:23:07 i want to start listening
+2024/11/24 15:23:07 Failed to listen: listen tcp: address 50051: missing port in address
+2024/11/24 15:24:05 i want to start listening
+2024/11/24 15:24:05 Failed to listen: listen tcp: address 50051: missing port in address
+2024/11/24 15:25:32 i want to start listening
+2024/11/24 15:25:32 Listener created successfully: [::]:50051
+2024/11/24 15:25:32 Server is running at [::]:50051
+2024/11/24 15:25:32 Starting auction timer...
+2024/11/24 15:25:58 i want to start listening
+2024/11/24 15:25:58 Listener created successfully: [::]:50052
+2024/11/24 15:25:58 Server is running at [::]:50052
+2024/11/24 15:25:58 Starting auction timer...
+2024/11/24 15:26:30 Starting client...
+2024/11/24 15:26:30 Client attempting to connect to server: :50051
+2024/11/24 15:26:30 Client connected to server: :50051
+2024/11/24 15:26:30 Client attempting to connect to server: :50052
+2024/11/24 15:26:30 Client connected to server: :50052
+2024/11/24 15:26:30 Client attempting to connect to server: :50053
+2024/11/24 15:26:30 Client connected to server: :50053
+2024/11/24 15:26:57 Sending bid request: User sten, Amount 1
+2024/11/24 15:26:57 Error while bidding: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50053: connect: connection refused"
+2024/11/24 15:27:02 Sending bid request: User sten, Amount 2
+2024/11/24 15:27:02 Error while bidding: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50053: connect: connection refused"
+2024/11/24 15:27:06 Sending bid request: User sten, Amount 3
+2024/11/24 15:27:06 Error while bidding: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50053: connect: connection refused"
+2024/11/24 15:27:29 Starting client...
+2024/11/24 15:27:29 Client attempting to connect to server: :50051
+2024/11/24 15:27:29 Client connected to server: :50051
+2024/11/24 15:27:29 Client attempting to connect to server: :50052
+2024/11/24 15:27:29 Client connected to server: :50052
+2024/11/24 15:27:29 Client attempting to connect to server: :50053
+2024/11/24 15:27:29 Client connected to server: :50053
+2024/11/24 15:27:36 Sending bid request: User ben, Amount 5
+2024/11/24 15:27:36 Error while bidding: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50053: connect: connection refused"
+2024/11/24 15:27:38 Fetching auction result...
+2024/11/24 15:27:38 Error while fetching result: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50053: connect: connection refused"
+2024/11/24 15:27:45 Fetching auction result...
+2024/11/24 15:27:45 Error while fetching result: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50053: connect: connection refused"
+2024/11/24 15:27:52 Sending bid request: User ben, Amount 50
+2024/11/24 15:27:52 Error while bidding: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50053: connect: connection refused"
