@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const auctionDuration = 100 * time.Second
+const auctionDuration = 1000 * time.Second
 
 type AuctionServer struct {
 	proto.UnimplementedAuctionServerServer
@@ -24,17 +24,11 @@ type AuctionServer struct {
 	isAuctionOver bool
 	mutex         sync.Mutex
 	reps          []string
-	lamportClock  int64
-}
-
-type TimeRequest struct {
-	Amount       *proto.Amount
-	LamportClock int64
 }
 
 func main() {
 	// to the log
-	file, err := os.OpenFile("auction_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
+	file, err := os.OpenFile("../auction_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		log.Fatalf("failed to open log file: %v", err)
 	}
@@ -42,11 +36,15 @@ func main() {
 
 	log.SetOutput(file)
 
+	log.Println("writing to the log from server")
+
 	// actual main
+	log.Println("i want to start listening")
 	listener, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
+	log.Printf("Listener created successfully: %v", listener.Addr())
 
 	grpcServer := grpc.NewServer()
 	auctionServer := &AuctionServer{
@@ -56,7 +54,11 @@ func main() {
 	}
 	proto.RegisterAuctionServerServer(grpcServer, auctionServer)
 
-	auctionServer.AuctionTimer()
+	go func() {
+		log.Println("Starting auction timer...")
+		auctionServer.AuctionTimer()
+		log.Println("Auction timer completed")
+	}()
 
 	log.Printf("Server is running at %v", listener.Addr())
 	if err := grpcServer.Serve(listener); err != nil {
@@ -68,16 +70,6 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	s.lamportClock++
-	log.Printf("Received bid with amount %v, Lamport clock: %d", req.Amount, s.lamportClock)
-
-	timeReq := TimeRequest{
-		Amount:       req,
-		LamportClock: s.lamportClock,
-	}
-
-	s.processRequest(timeReq)
-
 	if s.isAuctionOver {
 		return &proto.Ack{
 			Ack: "fail",
@@ -87,7 +79,7 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 	if int(req.Amount) > s.highestBid {
 
 		s.highestBid = int(req.Amount)
-		// s.highestBidder = whatever highestbidder ID is
+		s.highestBidder = req.Bidder
 
 		// Propagate the bid request to all replicas
 		s.PropagateBid(req)
@@ -95,11 +87,12 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 		return &proto.Ack{
 			Ack: "success",
 		}, nil
-	} else {
-		return &proto.Ack{
-			Ack: "BidException: yOu PoOR bAsTArD",
-		}, nil
 	}
+
+	return &proto.Ack{
+		Ack: "BidException: yOu PoOR bAsTArD",
+	}, nil
+
 }
 
 func (s *AuctionServer) PropagateBid(req *proto.Amount) {
@@ -109,8 +102,9 @@ func (s *AuctionServer) PropagateBid(req *proto.Amount) {
 			log.Printf("Cannot connect to replica %v: %v", addr, err)
 			continue
 		}
-		client := proto.NewAuctionServerClient(conn)
+		defer conn.Close()
 
+		client := proto.NewAuctionServerClient(conn)
 		_, err = client.Bid(context.Background(), req)
 		if err != nil {
 			log.Printf("Failed to propagate bid to replica %v: %v", addr, err)
@@ -128,12 +122,13 @@ func (s *AuctionServer) Result(ctx context.Context, req *proto.Empty) (*proto.Ou
 			Result:     "Auction over, the highest bidder was " + s.highestBidder,
 			HighestBid: int32(s.highestBid),
 		}, nil
-	} else {
-		return &proto.Outcome{
-			Result:     "Auction is ongoing, the highest bidder is " + s.highestBidder,
-			HighestBid: int32(s.highestBid),
-		}, nil
 	}
+
+	return &proto.Outcome{
+		Result:     "Auction is ongoing, the highest bidder is " + s.highestBidder,
+		HighestBid: int32(s.highestBid),
+	}, nil
+
 }
 
 func (s *AuctionServer) AuctionTimer() {
@@ -143,9 +138,3 @@ func (s *AuctionServer) AuctionTimer() {
 	s.mutex.Unlock()
 	log.Println("Auction has ended")
 }
-
-/*
-func (s *AuctionServer) processRequest(req TimeRequest){
-	log.Printf("the request is pecessing  with amoung %v and lamport clock %d", req.Amount.Amount)
-}
-*/

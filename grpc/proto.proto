@@ -6,12 +6,12 @@ package proto;
 
 service AuctionServer {
     rpc Bid(Amount) returns (Ack);
-
     rpc Result(Empty) returns (Outcome);
 }
 
 message Amount {
     int32 amount = 1;
+    string bidder = 2;
 }
 
 message Ack {
@@ -21,6 +21,7 @@ message Ack {
 message Outcome {
     string result = 1;
     int32 highestBid = 2;
+    string highestBidder = 3;
 }
 
 message Empty {}

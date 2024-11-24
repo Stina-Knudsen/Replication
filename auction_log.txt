@@ -1,0 +1,12 @@
+2024/11/24 14:19:42 writing to the log from server
+2024/11/24 14:19:42 i want to start listening
+2024/11/24 14:19:42 Listener created successfully: [::]:50051
+2024/11/24 14:19:42 Server is running at [::]:50051
+2024/11/24 14:19:42 Starting auction timer...
+2024/11/24 14:20:01 Starting client...
+2024/11/24 14:20:01 Client attempting to connect to server: :50051
+2024/11/24 14:20:01 Client connected to server: :50051
+2024/11/24 14:20:01 Client attempting to connect to server: :50052
+2024/11/24 14:20:01 Client connected to server: :50052
+2024/11/24 14:20:01 Client attempting to connect to server: :50053
+2024/11/24 14:20:01 Client connected to server: :50053
