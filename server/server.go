@@ -15,8 +15,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const auctionDuration = 1000 * time.Second
-
 type AuctionServer struct {
 	proto.UnimplementedAuctionServerServer
 	highestBid    int
@@ -27,6 +25,8 @@ type AuctionServer struct {
 	reps          []string
 	port          string
 }
+
+const auctionDuration = 1000 * time.Second
 
 var port = flag.String("port", "50051", "Server port")
 
