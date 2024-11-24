@@ -28,7 +28,7 @@ type AuctionServer struct {
 	port          string
 }
 
-var port = flag.String("port", "5000", "Server port")
+var port = flag.String("port", "50051", "Server port")
 
 func main() {
 	// to the log

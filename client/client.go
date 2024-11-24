@@ -41,6 +41,7 @@ func main() {
 		if err == nil {
 			client = proto.NewAuctionServerClient(conn)
 			log.Printf("Client connected to server: %v", server)
+			break
 		} else {
 			log.Printf("Client failed to connect to server %v: %v", server, err)
 		}
