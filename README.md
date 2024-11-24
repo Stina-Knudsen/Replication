@@ -2,7 +2,7 @@
 
 ### Welcome to Stanniol's implementation
 
-** Setup instructions **
+**Setup instructions**
 
 Once the repository has been cloned and have opened the program, you should be at the root of this repository.
 The instructions assume you start at the root.
@@ -19,7 +19,7 @@ The instructions assume you start at the root.
 - `go run client.go`
 - repeat the amount of clients you want
 
-** Crash instructions **
+**Crash instructions**
 
 You can use `control + c` on mac and  `Ctrl + c` on Windows, in a terminal running a server to crash the server
 
