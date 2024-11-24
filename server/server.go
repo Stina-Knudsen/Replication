@@ -31,7 +31,7 @@ type AuctionServer struct {
 var port = flag.String("port", "50051", "Server port")
 
 func main() {
-	// to the log
+	// do it for the log
 	file, err := os.OpenFile("../auction_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		log.Fatalf("failed to open log file: %v", err)
@@ -86,7 +86,7 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 		s.highestBid = int(req.Amount)
 		s.highestBidder = req.Bidder
 
-		// Propagate the bid request to all replicas
+		// propagate the bid request to all replicas
 		s.PropagateBid(req)
 
 		return &proto.Ack{
@@ -137,9 +137,9 @@ func (s *AuctionServer) Result(ctx context.Context, req *proto.Empty) (*proto.Ou
 }
 
 func (s *AuctionServer) AuctionTimer() {
-	time.Sleep(auctionDuration) //makes the auction run for an amount of time
+	time.Sleep(auctionDuration) // makes the auction run for an amount of time
 	s.mutex.Lock()
-	s.isAuctionOver = true //ends auction
+	s.isAuctionOver = true // ends auction
 	s.mutex.Unlock()
 	log.Println("Auction has ended")
 }

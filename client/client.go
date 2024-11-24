@@ -25,11 +25,11 @@ func main() {
 	defer file.Close()
 
 	log.SetOutput(file)
-	// --------------------------------------
-	// List of server addresses (replicas)
+
+	// list of server addresses (the replicas)
 	servers := []string{":50051", ":50052", ":50053"}
 
-	// Choose a server to connect to
+	// choose a server to connect
 	var conn *grpc.ClientConn
 	var err error
 	var client proto.AuctionServerClient
@@ -45,15 +45,13 @@ func main() {
 		} else {
 			log.Printf("Client failed to connect to server %v: %v", server, err)
 		}
-
 	}
 	if err != nil {
 		log.Fatalf("Client failed to connect to any server: %v", err)
 	}
 	defer conn.Close()
 
-	// --------------------------------------
-
+	// gets the users username
 	fmt.Print("Enter your username: ")
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
@@ -89,14 +87,14 @@ func Bid(ctx context.Context, client proto.AuctionServerClient, bidder string, a
 		Bidder: bidder,
 	}
 
-	// Send the request to the server
+	// send the request to the server
 	resp, err := client.Bid(ctx, req)
 	if err != nil {
 		log.Printf("Error while bidding: %v", err)
 		return
 	}
 
-	// Handle the response
+	// handle response
 	log.Printf("Response from server: %s", resp.Ack)
 	if resp.Ack == "success" {
 		fmt.Println("Your bid was accepted!")
@@ -110,7 +108,7 @@ func Result(ctx context.Context, client proto.AuctionServerClient) {
 
 	req := &proto.Empty{}
 
-	// Send the request to the server
+	// send the request to the server
 	resp, err := client.Result(ctx, req)
 	if err != nil {
 		log.Printf("Error while fetching result: %v", err)
@@ -118,7 +116,7 @@ func Result(ctx context.Context, client proto.AuctionServerClient) {
 		return
 	}
 
-	// Handle the response
+	// handle response
 	log.Printf("Auction result received: %s, Highest Bid: %d", resp.Result, resp.HighestBid)
 	fmt.Printf("Auction Status: %s\n", resp.Result)
 	fmt.Printf("Current Highest Bid: %d\n", resp.HighestBid)
