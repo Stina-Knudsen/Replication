@@ -6,7 +6,9 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/signal"
 	"sync"
+	"syscall"
 	"time"
 
 	proto "Replication/grpc"
@@ -40,6 +42,10 @@ func main() {
 
 	log.SetOutput(file)
 
+	// handle 'crashing' for the log
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
 	flag.Parse()
 
 	// actual main
@@ -65,10 +71,18 @@ func main() {
 		log.Println("Auction timer completed")
 	}()
 
-	log.Printf("Server is running at %v", listener.Addr())
-	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatalf("Failed to serve: %v", err)
-	}
+	go func() {
+		log.Printf("Server is running at %s", listener.Addr())
+		if err := grpcServer.Serve(listener); err != nil {
+			log.Fatalf("Failed to serve: %s", err)
+		}
+	}()
+
+	// logging the crash/interruption
+	<-stop
+	log.Printf("System interrupted. Shutting down server %v. \n", listener.Addr())
+	grpcServer.GracefulStop()
+	log.Printf("Server %v stopped... \n", listener.Addr())
 }
 
 func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack, error) {

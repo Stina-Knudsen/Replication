@@ -1,76 +1,63 @@
-2024/11/24 15:59:25 i want to start listening
-2024/11/24 15:59:25 Listener created successfully: [::]:50051
-2024/11/24 15:59:25 Server is running at [::]:50051
-2024/11/24 15:59:25 Starting auction timer...
-2024/11/24 15:59:45 i want to start listening
-2024/11/24 15:59:45 Listener created successfully: [::]:50052
-2024/11/24 15:59:45 Server is running at [::]:50052
-2024/11/24 15:59:45 Starting auction timer...
-2024/11/24 15:59:51 i want to start listening
-2024/11/24 15:59:51 Listener created successfully: [::]:50053
-2024/11/24 15:59:51 Server is running at [::]:50053
-2024/11/24 15:59:51 Starting auction timer...
-2024/11/24 15:59:59 Starting client...
-2024/11/24 15:59:59 Client attempting to connect to server: :50051
-2024/11/24 15:59:59 Client connected to server: :50051
-2024/11/24 16:00:14 Sending bid request: User brop, Amount 100
-2024/11/24 16:00:14 Response from server: success
-2024/11/24 16:00:23 Fetching auction result...
-2024/11/24 16:00:23 Auction result received: Auction is ongoing, the highest bidder is brop, Highest Bid: 100
-2024/11/24 16:00:36 Starting client...
-2024/11/24 16:00:36 Client attempting to connect to server: :50051
-2024/11/24 16:00:36 Client connected to server: :50051
-2024/11/24 16:00:41 Sending bid request: User stik, Amount 150
-2024/11/24 16:00:41 Response from server: success
-2024/11/24 16:00:47 Fetching auction result...
-2024/11/24 16:00:47 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 150
-2024/11/24 16:00:56 Fetching auction result...
-2024/11/24 16:00:56 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 150
-2024/11/24 16:01:13 Sending bid request: User brop, Amount 200
-2024/11/24 16:01:13 Response from server: success
-2024/11/24 16:01:17 Fetching auction result...
-2024/11/24 16:01:17 Auction result received: Auction is ongoing, the highest bidder is brop, Highest Bid: 200
-2024/11/24 16:01:23 Fetching auction result...
-2024/11/24 16:01:23 Auction result received: Auction is ongoing, the highest bidder is brop, Highest Bid: 200
-2024/11/24 16:01:32 i want to start listening
-2024/11/24 16:01:32 Listener created successfully: [::]:50052
-2024/11/24 16:01:32 Server is running at [::]:50052
-2024/11/24 16:01:32 Starting auction timer...
-2024/11/24 16:01:41 Sending bid request: User stik, Amount 250
-2024/11/24 16:01:41 Response from server: success
-2024/11/24 16:01:44 Fetching auction result...
-2024/11/24 16:01:44 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 250
-2024/11/24 16:01:57 Sending bid request: User brop, Amount 230
-2024/11/24 16:01:57 Response from server: BidException: yOu PoOR bAsTArD
-2024/11/24 16:02:01 Fetching auction result...
-2024/11/24 16:02:01 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 250
-2024/11/24 16:02:23 Sending bid request: User brop, Amount 300
-2024/11/24 16:02:23 Error while bidding: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50051: connect: connection refused"
-2024/11/24 16:02:41 Fetching auction result...
-2024/11/24 16:02:41 Error while fetching result: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50051: connect: connection refused"
-2024/11/24 16:03:26 Sending bid request: User brop, Amount 100
-2024/11/24 16:03:26 Error while bidding: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50051: connect: connection refused"
-2024/11/24 16:03:43 i want to start listening
-2024/11/24 16:03:43 Listener created successfully: [::]:50051
-2024/11/24 16:03:43 Server is running at [::]:50051
-2024/11/24 16:03:43 Starting auction timer...
-2024/11/24 16:03:48 Fetching auction result...
-2024/11/24 16:03:48 Error while fetching result: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp :50051: connect: connection refused"
-2024/11/24 16:04:04 i want to start listening
-2024/11/24 16:04:04 Listener created successfully: [::]:50053
-2024/11/24 16:04:04 Server is running at [::]:50053
-2024/11/24 16:04:04 Starting auction timer...
-2024/11/24 16:04:08 Fetching auction result...
-2024/11/24 16:04:08 Auction result received: Auction is ongoing, the highest bidder is , Highest Bid: 0
-2024/11/24 16:04:19 Sending bid request: User stik, Amount 100
-2024/11/24 16:04:19 Response from server: success
-2024/11/24 16:04:37 Fetching auction result...
-2024/11/24 16:04:37 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 100
-2024/11/24 16:04:43 Fetching auction result...
-2024/11/24 16:04:43 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 100
-2024/11/24 16:04:47 Sending bid request: User brop, Amount 150
-2024/11/24 16:04:47 Response from server: success
-2024/11/24 16:04:50 Fetching auction result...
-2024/11/24 16:04:50 Auction result received: Auction is ongoing, the highest bidder is brop, Highest Bid: 150
-2024/11/24 16:04:54 Sending bid request: User brop, Amount 100
-2024/11/24 16:04:54 Response from server: BidException: yOu PoOR bAsTArD
+2024/11/25 12:32:42 i want to start listening
+2024/11/25 12:32:42 Listener created successfully: [::]:50051
+2024/11/25 12:32:42 Server is running at [::]:50051
+2024/11/25 12:32:42 Starting auction timer...
+2024/11/25 12:32:47 i want to start listening
+2024/11/25 12:32:47 Listener created successfully: [::]:50052
+2024/11/25 12:32:47 Starting auction timer...
+2024/11/25 12:32:47 Server is running at [::]:50052
+2024/11/25 12:32:56 i want to start listening
+2024/11/25 12:32:56 Listener created successfully: [::]:50053
+2024/11/25 12:32:56 Server is running at [::]:50053
+2024/11/25 12:32:56 Starting auction timer...
+2024/11/25 12:33:51 Starting client...
+2024/11/25 12:33:51 Client attempting to connect to server: :50051
+2024/11/25 12:33:51 Client connected to server: :50051
+2024/11/25 12:33:58 Sending bid request: User alby, Amount 100
+2024/11/25 12:33:58 Response from server: success
+2024/11/25 12:34:11 Starting client...
+2024/11/25 12:34:11 Client attempting to connect to server: :50051
+2024/11/25 12:34:11 Client connected to server: :50051
+2024/11/25 12:34:29 Fetching auction result...
+2024/11/25 12:34:29 Auction result received: Auction is ongoing, the highest bidder is alby, Highest Bid: 100
+2024/11/25 12:35:25 Sending bid request: User stik, Amount 150
+2024/11/25 12:35:25 Response from server: success
+2024/11/25 12:35:36 Starting client...
+2024/11/25 12:35:36 Client attempting to connect to server: :50051
+2024/11/25 12:35:36 Client connected to server: :50051
+2024/11/25 12:35:43 Sending bid request: User brop, Amount 150
+2024/11/25 12:35:43 Response from server: BidException: yOu PoOR bAsTArD
+2024/11/25 12:35:46 Fetching auction result...
+2024/11/25 12:35:46 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 150
+2024/11/25 12:35:58 Sending bid request: User brop, Amount 200
+2024/11/25 12:35:58 Response from server: success
+2024/11/25 12:36:01 System interrupted. Shutting down server [::]:50052. 
+2024/11/25 12:36:01 Server [::]:50052 stopped... 
+2024/11/25 12:36:05 Fetching auction result...
+2024/11/25 12:36:05 Auction result received: Auction is ongoing, the highest bidder is brop, Highest Bid: 200
+2024/11/25 12:36:11 Sending bid request: User alby, Amount 250
+2024/11/25 12:36:11 Response from server: success
+2024/11/25 12:36:16 Fetching auction result...
+2024/11/25 12:36:16 Auction result received: Auction is ongoing, the highest bidder is alby, Highest Bid: 250
+2024/11/25 12:36:22 Sending bid request: User stik, Amount 200
+2024/11/25 12:36:22 Response from server: BidException: yOu PoOR bAsTArD
+2024/11/25 12:36:26 Sending bid request: User stik, Amount 300
+2024/11/25 12:36:26 Response from server: success
+2024/11/25 12:36:30 Fetching auction result...
+2024/11/25 12:36:30 Auction result received: Auction is ongoing, the highest bidder is stik, Highest Bid: 300
+2024/11/25 12:36:37 Sending bid request: User brop, Amount 350
+2024/11/25 12:36:37 Response from server: success
+2024/11/25 12:36:42 i want to start listening
+2024/11/25 12:36:42 Listener created successfully: [::]:50052
+2024/11/25 12:36:42 Server is running at [::]:50052
+2024/11/25 12:36:42 Starting auction timer...
+2024/11/25 12:36:47 Fetching auction result...
+2024/11/25 12:36:47 Auction result received: Auction is ongoing, the highest bidder is brop, Highest Bid: 350
+2024/11/25 12:36:59 Sending bid request: User alby, Amount 400
+2024/11/25 12:36:59 Response from server: success
+2024/11/25 12:37:07 Fetching auction result...
+2024/11/25 12:37:07 Auction result received: Auction is ongoing, the highest bidder is alby, Highest Bid: 400
+2024/11/25 12:37:20 Sending bid request: User stik, Amount 350
+2024/11/25 12:37:20 Response from server: BidException: yOu PoOR bAsTArD
+2024/11/25 12:37:23 Fetching auction result...
+2024/11/25 12:37:23 Auction result received: Auction is ongoing, the highest bidder is alby, Highest Bid: 400
