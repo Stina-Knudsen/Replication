@@ -7,13 +7,13 @@
 Once the repository has been cloned and have opened the program, you should be at the root of this repository.
 The instructions assume you start at the root.
 
-1. Step is to set up all the nodes the clients are familiar with:
+1. Set up all the nodes the clients are familiar with:
 - open a terminal
 - `cd server`
 - `go run server.go -port <port address>`
 - The clients know the following ports: 50051, 50052 and 50053
 
-2. Step is to set up a client
+2. Set up a client
 - open a different terminal
 - `cd client`
 - `go run client.go`
