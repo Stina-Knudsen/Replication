@@ -152,14 +152,16 @@ func (s *AuctionServer) Result(ctx context.Context, req *proto.Empty) (*proto.Ou
 
 	if s.isAuctionOver {
 		return &proto.Outcome{
-			Result:     "Auction over, the highest bidder was " + s.highestBidder,
-			HighestBid: int32(s.highestBid),
+			Result:        "Auction over, the highest bidder was " + s.highestBidder,
+			HighestBid:    int32(s.highestBid),
+			HighestBidder: s.highestBidder,
 		}, nil
 	}
 
 	return &proto.Outcome{
-		Result:     "Auction is ongoing, the highest bidder is " + s.highestBidder,
-		HighestBid: int32(s.highestBid),
+		Result:        "Auction is ongoing, the highest bidder is " + s.highestBidder,
+		HighestBid:    int32(s.highestBid),
+		HighestBidder: s.highestBidder,
 	}, nil
 
 }
