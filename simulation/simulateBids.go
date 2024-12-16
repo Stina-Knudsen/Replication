@@ -23,10 +23,8 @@ func main() {
 
 	client := proto.NewAuctionServerClient(conn)
 
-	// Use WaitGroup to synchronize goroutines
 	var wg sync.WaitGroup
 
-	// Define the users and their bids
 	users := []struct {
 		name   string
 		amount int32
@@ -35,9 +33,8 @@ func main() {
 		{"Bob", 150},
 	}
 
-	wg.Add(len(users)) // Add the number of concurrent users
+	wg.Add(len(users))
 
-	// Simulate each user bidding concurrently
 	for _, user := range users {
 		go func(userName string, bidAmount int32) {
 			defer wg.Done()
@@ -45,10 +42,8 @@ func main() {
 		}(user.name, user.amount)
 	}
 
-	// Wait for all goroutines to finish
 	wg.Wait()
 
-	// Fetch the auction result after all bids
 	result, err := client.Result(context.Background(), &proto.Empty{})
 	if err != nil {
 		log.Fatalf("Failed to fetch auction result: %v", err)
@@ -57,11 +52,10 @@ func main() {
 }
 
 func bid(client proto.AuctionServerClient, bidder string, amount int32) {
-	// Send a bid
 	req := &proto.Amount{
 		Amount:    amount,
 		Bidder:    bidder,
-		Timestamp: int32(time.Now().UnixNano()), // Add a timestamp for ordering
+		Timestamp: int32(time.Now().UnixNano()),
 	}
 	resp, err := client.Bid(context.Background(), req)
 	if err != nil {
