@@ -45,7 +45,7 @@ func main() {
 
 	// Main loop
 	for {
-		log.Println("Options: bid [amount] ; results")
+		log.Println("Please write bid [amount] to bid that amount or result :D")
 		input.Scan()
 		command := strings.TrimSpace(input.Text())
 		parts := strings.Split(command, " ")
@@ -57,21 +57,21 @@ func main() {
 				continue
 			}
 			sendBid(int32(amount), clients)
-		} else if parts[0] == "results" {
+		} else if parts[0] == "result" {
 			outcome, err := getResults(clients)
 			if err != nil {
 				log.Println("Error fetching results:", err)
 				continue
 			}
-			if outcome.Result == "Auction over" {
+			if outcome.Result == "Auction over :O" {
 				log.Println("The auction is over!")
 				log.Printf("The winner is: %s with a bid of %d\n", outcome.HighestBidder, outcome.HighestBid)
 			} else {
-				log.Println("The auction is ongoing.")
+				log.Println("The auction is ongoing XD")
 				log.Printf("The current highest bid is %d by %s\n", outcome.HighestBid, outcome.HighestBidder)
 			}
 		} else {
-			log.Println("Unknown command! Use: bid [amount] or results")
+			log.Println("Unknown command, please type bid [amount] or results :/")
 		}
 	}
 }
@@ -94,7 +94,7 @@ func sendBid(amount int32, clients []proto.AuctionServerClient) {
 			continue
 		}
 		if ack.Ack == "success" {
-			log.Println("Bid was successful!")
+			log.Println("Bid was successful ;)")
 		} else {
 			log.Println("Bid failed:", ack.Ack)
 		}

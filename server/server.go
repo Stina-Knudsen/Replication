@@ -123,7 +123,7 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 	}
 
 	return &proto.Ack{
-		Ack: "BidException: yOu PoOR bAsTArD",
+		Ack: "BidException: Your bid was too low ;(",
 	}, nil
 
 }

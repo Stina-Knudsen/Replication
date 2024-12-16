@@ -1,0 +1,12 @@
+2024/12/16 22:02:14 i want to start listening
+2024/12/16 22:02:14 Listener created successfully: [::]:50051
+2024/12/16 22:02:14 Starting auction timer...
+2024/12/16 22:02:14 Server is running at [::]:50051
+2024/12/16 22:02:18 i want to start listening
+2024/12/16 22:02:18 Listener created successfully: [::]:50052
+2024/12/16 22:02:18 Starting auction timer...
+2024/12/16 22:02:18 Server is running at [::]:50052
+2024/12/16 22:02:21 i want to start listening
+2024/12/16 22:02:21 Listener created successfully: [::]:50053
+2024/12/16 22:02:21 Starting auction timer...
+2024/12/16 22:02:21 Server is running at [::]:50053
