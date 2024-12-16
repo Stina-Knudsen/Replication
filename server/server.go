@@ -26,6 +26,8 @@ type AuctionServer struct {
 	mutex         sync.Mutex
 	reps          []string
 	port          string
+	highestTS     int32
+	lamportTime   int32
 }
 
 const auctionDuration = 1000 * time.Second
@@ -62,6 +64,8 @@ func main() {
 		bidders:       make(map[string]bool),
 		isAuctionOver: false,
 		port:          *port,
+		highestTS:     0,
+		lamportTime:   0,
 	}
 	proto.RegisterAuctionServerServer(grpcServer, auctionServer)
 
@@ -95,10 +99,20 @@ func (s *AuctionServer) Bid(ctx context.Context, req *proto.Amount) (*proto.Ack,
 		}, nil
 	}
 
-	if int(req.Amount) > s.highestBid {
+	s.lamportTime++
+	reqTS := req.Timestamp
+	if reqTS < s.lamportTime {
+		reqTS = s.lamportTime
+	}
+
+	if req.Amount > int32(s.highestBid) ||
+		(req.Amount == int32(s.highestBid) && (reqTS > s.highestTS ||
+			(reqTS == s.highestTS && req.Bidder < s.highestBidder))) {
 
 		s.highestBid = int(req.Amount)
 		s.highestBidder = req.Bidder
+		s.highestTS = reqTS
+		s.lamportTime = reqTS
 
 		// propagate the bid request to all replicas
 		s.PropagateBid(req)

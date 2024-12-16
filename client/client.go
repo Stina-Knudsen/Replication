@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	proto "Replication/grpc"
 
@@ -83,8 +84,9 @@ func Bid(ctx context.Context, client proto.AuctionServerClient, bidder string, a
 	log.Printf("Sending bid request: User %s, Amount %d", bidder, amount)
 
 	req := &proto.Amount{
-		Amount: amount,
-		Bidder: bidder,
+		Amount:    amount,
+		Bidder:    bidder,
+		Timestamp: int32(time.Now().UnixNano()),
 	}
 
 	// send the request to the server
