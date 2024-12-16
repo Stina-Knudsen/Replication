@@ -12,6 +12,7 @@ service AuctionServer {
 message Amount {
     int32 amount = 1;
     string bidder = 2;
+    int32 timestamp = 3;
 }
 
 message Ack {
