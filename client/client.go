@@ -19,6 +19,15 @@ import (
 var bidder string
 
 func main() {
+	// do it for the log
+	file, err := os.OpenFile("../auction_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
+	if err != nil {
+		log.Fatalf("failed to open log file: %v", err)
+	}
+	defer file.Close()
+
+	log.SetOutput(file)
+
 	// List of server addresses
 	servers := []string{":50051", ":50052", ":50053"}
 	var clients []proto.AuctionServerClient
@@ -37,15 +46,16 @@ func main() {
 		log.Fatal("No servers available to connect.")
 	}
 
-	log.Println("Connected to servers. Bidding started!")
+	fmt.Println("Connected to servers. Bidding started!")
+	log.Println("Client connected to servers. Bidding started!")
 	input := bufio.NewScanner(os.Stdin)
-	log.Println("Enter your username:")
+	fmt.Println("Enter your username:")
 	input.Scan()
 	bidder = input.Text()
 
 	// Main loop
 	for {
-		log.Println("Please write bid [amount] to bid that amount or result :D")
+		fmt.Println("Please write bid [amount] to bid that amount or result")
 		input.Scan()
 		command := strings.TrimSpace(input.Text())
 		parts := strings.Split(command, " ")
@@ -54,24 +64,33 @@ func main() {
 			amount, err := strconv.Atoi(parts[1])
 			if err != nil {
 				log.Println("Invalid bid. Usage: bid [amount]")
+				fmt.Println("Invalid bid. Usage: bid [amount]")
 				continue
 			}
+			log.Printf("Client made a bid of %d", amount)
 			sendBid(int32(amount), clients)
 		} else if parts[0] == "result" {
 			outcome, err := getResults(clients)
 			if err != nil {
 				log.Println("Error fetching results:", err)
+				fmt.Println("Error fetching results:", err)
 				continue
 			}
-			if outcome.Result == "Auction over :O" {
+			if outcome.Result == "Auction over" {
 				log.Println("The auction is over!")
 				log.Printf("The winner is: %s with a bid of %d\n", outcome.HighestBidder, outcome.HighestBid)
+
+				fmt.Println("The auction is over!")
+				fmt.Printf("The winner is: %s with a bid of %d\n", outcome.HighestBidder, outcome.HighestBid)
 			} else {
-				log.Println("The auction is ongoing XD")
+				log.Println("The auction is ongoing")
 				log.Printf("The current highest bid is %d by %s\n", outcome.HighestBid, outcome.HighestBidder)
+
+				fmt.Println("The auction is ongoing")
+				fmt.Printf("The current highest bid is %d by %s\n", outcome.HighestBid, outcome.HighestBidder)
 			}
 		} else {
-			log.Println("Unknown command, please type bid [amount] or results :/")
+			log.Println("Unknown command, please type bid [amount] or results")
 		}
 	}
 }
@@ -90,13 +109,16 @@ func sendBid(amount int32, clients []proto.AuctionServerClient) {
 
 		ack, err := client.Bid(ctx, req)
 		if err != nil {
-			log.Println("Failed to send bid to a server:", err)
+			log.Println("Failed to send bid to a server")
+			fmt.Println("Failed to send bid to a server")
 			continue
 		}
 		if ack.Ack == "success" {
-			log.Println("Bid was successful ;)")
+			log.Println("Bid was successful")
+			fmt.Println("Bid was successful")
 		} else {
 			log.Println("Bid failed:", ack.Ack)
+			fmt.Println("Bid failed:", ack.Ack)
 		}
 	}
 }
@@ -111,7 +133,8 @@ func getResults(clients []proto.AuctionServerClient) (*proto.Outcome, error) {
 
 		outcome, err := client.Result(ctx, &proto.Empty{})
 		if err != nil {
-			log.Println("Failed to fetch result from a server:", err)
+			log.Println("Failed to fetch result from a server")
+			fmt.Println("Failed to fetch result from a server")
 			continue
 		}
 		results = append(results, outcome)

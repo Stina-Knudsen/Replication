@@ -6,15 +6,14 @@ import (
 	"sync"
 	"time"
 
-	proto "Replication/grpc" // Import your generated proto package
+	proto "Replication/grpc"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
-	// Connect to the auction server
-	serverAddress := ":50051" // Update this if using a different server port
+	serverAddress := ":50051"
 	conn, err := grpc.Dial(serverAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to connect to server: %v", err)
@@ -29,8 +28,8 @@ func main() {
 		name   string
 		amount int32
 	}{
-		{"Alice", 100},
-		{"Bob", 150},
+		{"Anna", 100},
+		{"Karoline", 100},
 	}
 
 	wg.Add(len(users))

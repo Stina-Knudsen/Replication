@@ -24,3 +24,69 @@
 2024/12/16 22:23:05 Server [::]:50051 stopped... 
 2024/12/16 22:23:07 System interrupted. Shutting down server [::]:50052. 
 2024/12/16 22:23:07 Server [::]:50052 stopped... 
+2024/12/18 09:05:09 i want to start listening
+2024/12/18 09:05:09 Listener created successfully: [::]:50051
+2024/12/18 09:05:09 Server is running at [::]:50051
+2024/12/18 09:05:09 Starting auction timer...
+2024/12/18 09:05:19 i want to start listening
+2024/12/18 09:05:19 Listener created successfully: [::]:50052
+2024/12/18 09:05:19 Server is running at [::]:50052
+2024/12/18 09:05:19 Starting auction timer...
+2024/12/18 09:05:36 i want to start listening
+2024/12/18 09:05:36 Listener created successfully: [::]:50053
+2024/12/18 09:05:36 Server is running at [::]:50053
+2024/12/18 09:05:36 Starting auction timer...
+2024/12/18 09:06:34 System interrupted. Shutting down server [::]:50051. 
+2024/12/18 09:06:34 Server [::]:50051 stopped... 
+2024/12/18 10:04:01 i want to start listening
+2024/12/18 10:04:01 Listener created successfully: [::]:50051
+2024/12/18 10:04:01 Server is running at [::]:50051
+2024/12/18 10:04:01 Starting auction timer...
+2024/12/18 10:04:12 i want to start listening
+2024/12/18 10:04:12 Listener created successfully: [::]:50052
+2024/12/18 10:04:12 Server is running at [::]:50052
+2024/12/18 10:04:12 Starting auction timer...
+2024/12/18 10:04:25 i want to start listening
+2024/12/18 10:04:25 Listener created successfully: [::]:50053
+2024/12/18 10:04:25 Server is running at [::]:50053
+2024/12/18 10:04:25 Starting auction timer...
+2024/12/18 10:05:56 i want to start listening
+2024/12/18 10:05:56 Listener created successfully: [::]:50051
+2024/12/18 10:05:56 Starting auction timer...
+2024/12/18 10:05:56 Server is running at [::]:50051
+2024/12/18 10:06:07 i want to start listening
+2024/12/18 10:06:07 Listener created successfully: [::]:50052
+2024/12/18 10:06:07 Server is running at [::]:50052
+2024/12/18 10:06:07 Starting auction timer...
+2024/12/18 10:06:17 i want to start listening
+2024/12/18 10:06:17 Listener created successfully: [::]:50053
+2024/12/18 10:06:17 Starting auction timer...
+2024/12/18 10:06:17 Server is running at [::]:50053
+2024/12/18 10:06:22 Connected to servers. Bidding started!
+2024/12/18 10:06:22 Enter your username:
+2024/12/18 10:08:33 Client connected to servers. Bidding started!
+2024/12/18 10:09:14 Bid was successful
+2024/12/18 10:09:14 Bid was successful 
+2024/12/18 10:09:14 Bid was successful
+2024/12/18 10:15:52 i want to start listening
+2024/12/18 10:15:52 Listener created successfully: [::]:50051
+2024/12/18 10:15:52 Server is running at [::]:50051
+2024/12/18 10:15:52 Starting auction timer...
+2024/12/18 10:16:03 i want to start listening
+2024/12/18 10:16:03 Listener created successfully: [::]:50052
+2024/12/18 10:16:03 Server is running at [::]:50052
+2024/12/18 10:16:03 Starting auction timer...
+2024/12/18 10:16:10 i want to start listening
+2024/12/18 10:16:10 Failed to listen: listen tcp :50051: bind: address already in use
+2024/12/18 10:16:22 i want to start listening
+2024/12/18 10:16:22 Listener created successfully: [::]:50053
+2024/12/18 10:16:22 Server is running at [::]:50053
+2024/12/18 10:16:22 Starting auction timer...
+2024/12/18 10:16:32 Client connected to servers. Bidding started!
+2024/12/18 10:16:41 Bid was successful
+2024/12/18 10:16:41 Bid was successful
+2024/12/18 10:16:41 Bid was successful
+2024/12/18 10:17:12 Client connected to servers. Bidding started!
+2024/12/18 10:17:19 Bid failed: BidException: Your bid was too low ;(
+2024/12/18 10:17:19 Bid failed: BidException: Your bid was too low ;(
+2024/12/18 10:17:19 Bid failed: BidException: Your bid was too low ;(
