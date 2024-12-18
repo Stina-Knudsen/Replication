@@ -19,107 +19,107 @@ import (
 var bidder string
 
 func main() {
-	file, e := os.OpenFile("../auction_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
-	if e != nil {
-		log.Fatalf("failed to open log file: %v", e)
-	}
-	defer file.Close()
-
-	log.SetOutput(file)
-
-	// list of server addresses (the replicas)
+	// List of server addresses
 	servers := []string{":50051", ":50052", ":50053"}
+	var clients []proto.AuctionServerClient
 
-	// choose a server to connect
-	var conn *grpc.ClientConn
-	var err error
-	var client proto.AuctionServerClient
-
-	log.Println("Starting client...")
+	// Establish connections to all servers
 	for _, server := range servers {
-		log.Printf("Client attempting to connect to server: %v", server)
-		conn, err = grpc.Dial(server, grpc.WithTransportCredentials(insecure.NewCredentials()))
-		if err == nil {
-			client = proto.NewAuctionServerClient(conn)
-			log.Printf("Client connected to server: %v", server)
-			break
-		} else {
-			log.Printf("Client failed to connect to server %v: %v", server, err)
+		conn, err := grpc.Dial(server, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err != nil {
+			log.Printf("Failed to connect to server %s: %v", server, err)
+			continue
 		}
+		clients = append(clients, proto.NewAuctionServerClient(conn))
 	}
-	if err != nil {
-		log.Fatalf("Client failed to connect to any server: %v", err)
+
+	if len(clients) == 0 {
+		log.Fatal("No servers available to connect.")
 	}
-	defer conn.Close()
 
-	// gets the users username
-	fmt.Print("Enter your username: ")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	bidder = scanner.Text()
+	log.Println("Connected to servers. Bidding started!")
+	input := bufio.NewScanner(os.Stdin)
+	log.Println("Enter your username:")
+	input.Scan()
+	bidder = input.Text()
 
+	// Main loop
 	for {
-		fmt.Println("Type 'bid' to bid in the auction, or type 'result' to view the result :))")
-		scanner.Scan()
-		command := scanner.Text()
-		command = strings.TrimSpace(command)
+		log.Println("Please write bid [amount] to bid that amount or result :D")
+		input.Scan()
+		command := strings.TrimSpace(input.Text())
+		parts := strings.Split(command, " ")
 
-		if command == ("bid") {
-			fmt.Println("Type the amount you want to bid")
-			scanner.Scan()
-			amount, err := strconv.ParseInt(scanner.Text(), 10, 32)
+		if parts[0] == "bid" && len(parts) == 2 {
+			amount, err := strconv.Atoi(parts[1])
 			if err != nil {
-				log.Print("failed to parse amount: %d", amount)
+				log.Println("Invalid bid. Usage: bid [amount]")
+				continue
 			}
-			Bid(context.Background(), client, bidder, int32(amount))
-		} else if command == "result" {
-			Result(context.Background(), client)
+			sendBid(int32(amount), clients)
+		} else if parts[0] == "result" {
+			outcome, err := getResults(clients)
+			if err != nil {
+				log.Println("Error fetching results:", err)
+				continue
+			}
+			if outcome.Result == "Auction over :O" {
+				log.Println("The auction is over!")
+				log.Printf("The winner is: %s with a bid of %d\n", outcome.HighestBidder, outcome.HighestBid)
+			} else {
+				log.Println("The auction is ongoing XD")
+				log.Printf("The current highest bid is %d by %s\n", outcome.HighestBid, outcome.HighestBidder)
+			}
 		} else {
-			fmt.Println("Unidentified command")
+			log.Println("Unknown command, please type bid [amount] or results :/")
 		}
 	}
 }
 
-func Bid(ctx context.Context, client proto.AuctionServerClient, bidder string, amount int32) {
-	log.Printf("Sending bid request: User %s, Amount %d", bidder, amount)
+// Sends a bid to all servers
+func sendBid(amount int32, clients []proto.AuctionServerClient) {
+	for _, client := range clients {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
 
-	req := &proto.Amount{
-		Amount:    amount,
-		Bidder:    bidder,
-		Timestamp: int32(time.Now().UnixNano()),
-	}
+		req := &proto.Amount{
+			Amount:    amount,
+			Bidder:    bidder,
+			Timestamp: int32(time.Now().UnixNano()),
+		}
 
-	// send the request to the server
-	resp, err := client.Bid(ctx, req)
-	if err != nil {
-		log.Printf("Error while bidding: %v", err)
-		return
-	}
-
-	// handle response
-	log.Printf("Response from server: %s", resp.Ack)
-	if resp.Ack == "success" {
-		fmt.Println("Your bid was accepted!")
-	} else {
-		fmt.Println("Your bid was rejected:", resp.Ack)
+		ack, err := client.Bid(ctx, req)
+		if err != nil {
+			log.Println("Failed to send bid to a server:", err)
+			continue
+		}
+		if ack.Ack == "success" {
+			log.Println("Bid was successful ;)")
+		} else {
+			log.Println("Bid failed:", ack.Ack)
+		}
 	}
 }
 
-func Result(ctx context.Context, client proto.AuctionServerClient) {
-	log.Println("Fetching auction result...")
+// Fetches results from all servers and returns the first valid result
+func getResults(clients []proto.AuctionServerClient) (*proto.Outcome, error) {
+	var results []*proto.Outcome
 
-	req := &proto.Empty{}
+	for _, client := range clients {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
 
-	// send the request to the server
-	resp, err := client.Result(ctx, req)
-	if err != nil {
-		log.Printf("Error while fetching result: %v", err)
-		fmt.Println("Failed to fetch the auction result. Please try again later.")
-		return
+		outcome, err := client.Result(ctx, &proto.Empty{})
+		if err != nil {
+			log.Println("Failed to fetch result from a server:", err)
+			continue
+		}
+		results = append(results, outcome)
 	}
 
-	// handle response
-	log.Printf("Auction result received: %s, Highest Bid: %d", resp.Result, resp.HighestBid)
-	fmt.Printf("Auction Status: %s\n", resp.Result)
-	fmt.Printf("Current Highest Bid: %d\n", resp.HighestBid)
+	if len(results) == 0 {
+		return nil, fmt.Errorf("no results received from any server")
+	}
+
+	return results[0], nil
 }
